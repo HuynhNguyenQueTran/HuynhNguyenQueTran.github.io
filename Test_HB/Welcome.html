@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Chào mừng!</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    body {
+      background-color: #000;
+      color: white;
+      text-align: center;
+      padding: 30px 20px;
+      font-family: 'Segoe UI', sans-serif;
+      overflow-x: hidden;
+    }
+
+    .gif-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-top: 30px;
+      max-width: 100%;
+    }
+
+    .tenor-gif-embed {
+      max-width: 400px;
+      width: 100%;
+    }
+
+    .enter-btn,
+    .next-btn {
+      margin-top: 30px;
+      padding: 12px 24px;
+      font-size: 18px;
+      border: none;
+      border-radius: 8px;
+      background-color: #ff69b4;
+      color: white;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .enter-btn:hover,
+    .next-btn:hover {
+      background-color: red;
+    }
+
+    .welcome-text {
+      display: none;
+      opacity: 0;
+      transition: opacity 2s ease;
+      max-width: 700px;
+      margin: 40px auto;
+      font-size: 18px;
+      line-height: 1.6;
+    }
+
+    .fade-in {
+      display: block;
+      opacity: 1;
+    }
+
+    #welcome-text {
+      font-size: 2.5em;
+      background: linear-gradient(90deg, #ff4e50, #f9d423, #00c9ff);
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: gradientMove 5s linear infinite;
+    }
+
+    @keyframes gradientMove {
+      0% {
+        background-position: 0% 50%;
+      }
+
+      50% {
+        background-position: 100% 50%;
+      }
+
+      100% {
+        background-position: 0% 50%;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Audio phát tự động -->
+  <audio id="bgm" autoplay loop>
+    <source src="assets/welcome.mp3" type="audio/mpeg">
+    Trình duyệt của bạn không hỗ trợ âm thanh.
+  </audio>
+
+  <h1 id="welcome-text">Today, What's Up!!</h1>
+
+  <!-- GIF chào mừng -->
+  <div class="gif-container" id="gif">
+    <div class="tenor-gif-embed" data-postid="11906602122317646751" data-share-method="host"
+      data-aspect-ratio="0.871486" data-width="100%">
+      <a href="https://tenor.com/view/cat-underwater-gif-11906602122317646751">Cat Underwater GIF</a>
+      from <a href="https://tenor.com/search/cat-gifs">Cat GIFs</a>
+    </div>
+  </div>
+  <script async src="https://tenor.com/embed.js"></script>
+
+  <!-- Nút bắt đầu -->
+  <button class="enter-btn" onclick="startJourney()">Bắt đầu!</button>
+
+  <!-- Nội dung chào mừng -->
+  <div class="welcome-text" id="welcomeText">
+    <p>Chào mừng đến với nơi chứa sự vô tri này.</p>
+    <p>Ở đây có một điều bất ngờ... nhưng chúng tôi sẽ không nói đó là gì.</p>
+    <p>Chỉ biết rằng, những ai đi hết con đường này… thường quay lại với một ánh mắt ngơ ngác và câu nói: “Ủa... vậy là
+      hết hả?”</p>
+    <p>Nhưng đôi khi, chính điều không được nói mới là bất ngờ lớn nhất, phải không?</p>
+    <p>Tiến lên nào, người tò mò dũng cảm!</p>
+
+    <!-- Nội dung thêm mới -->
+    <p>Trên hành trình này, bạn sẽ gặp vài ba câu hỏi. Một trong số đó không có đáp án, nhưng bạn vẫn phải chọn.</p>
+    <p>Đừng tin vào mọi thứ bạn thấy, vì đôi khi điều đúng lại không hiện rõ ràng.</p>
+    <p>Và nếu bạn tự tin, hãy thử giải đố nhỏ này trước khi bắt đầu:</p>
+    <blockquote style="font-style: italic; margin: 20px auto; max-width: 500px;">
+      "Tôi không có cánh, không có chân,<br>
+      Nhưng vẫn bay từ sáng tới đêm.<br>
+      Tôi là ai?"
+    </blockquote>
+    <p>Không cần trả lời ngay. Nếu bạn biết, hãy mỉm cười và bấm tiếp tục.</p>
+  </div>
+
+  <!-- Nút tiếp tục -->
+  <button class="next-btn" id="nextBtn" onclick="goToHB()" style="display: none;">Tiếp tục</button>
+
+  <script>
+    // ✅ Phát nhạc khi load trang, xử lý autoplay bị chặn
+    window.addEventListener('load', () => {
+      const audio = document.getElementById('bgm');
+      const playPromise = audio.play();
+
+      if (playPromise !== undefined) {
+        playPromise.catch(() => {
+          console.warn("🎵 Autoplay bị chặn. Đợi tương tác để phát nhạc...");
+          const resume = () => {
+            audio.play();
+            document.removeEventListener('click', resume);
+          };
+          document.addEventListener('click', resume);
+        });
+      }
+    });
+
+    // ✅ Khi nhấn "Bắt đầu!"
+    function startJourney() {
+      document.getElementById('gif').style.display = 'none';
+      document.querySelector('.enter-btn').style.display = 'none';
+
+      const welcome = document.getElementById('welcomeText');
+      welcome.classList.add('fade-in');
+
+      setTimeout(() => {
+        document.getElementById('nextBtn').style.display = 'inline-block';
+      }, 5000);
+    }
+
+    // ✅ Khi nhấn "Tiếp tục"
+    function goToHB() {
+      window.location.href = "home.html";
+    }
+  </script>
+</body>
+
+</html>

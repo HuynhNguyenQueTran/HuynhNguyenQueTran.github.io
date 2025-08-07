@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Happy Birthday</title>
+  <link rel="stylesheet" href="HB.css">
+</head>
+
+<body>
+  <!-- Nhạc nền mở đầu -->
+  <audio id="music" src="audio/happy-birthday.mp3" loop></audio>
+
+  <!-- Nhạc chuyển cảnh sau khi bấm -->
+  <audio id="hbMusic" src="assets/HB.mp3" loop></audio>
+
+  <!-- Tiêu đề chính -->
+  <div style="text-align: center;">
+    <h1 id="message">Này là bước cuối cùng rồi !!!!</h1>
+  </div>
+
+  <!-- Form nhập tên + ngày sinh -->
+  <div id="birthday-form" class="form-container">
+    <h2>Nhập sổ hộ khẩu cho chuẩn nha !</h2>
+    <label for="nameInput">Tên cúng cơm</label><br />
+    <input type="text" id="nameInput" placeholder="Tên"><br />
+
+    <label for="dobInput">Sinh khi nào thì nhập khi đấy </label><br />
+    <input type="text" id="dobInput" placeholder="Đây là ví dụ 01/01/2000"><br />
+
+    <img src="assets/cat-16158_256.gif" class="cat-gif" alt="Ảnh mèo dễ thương" />
+    <button id="submitBtn">Đại đại đi</button>
+  </div>
+
+  <!-- Form nổi lời chúc -->
+  <div id="personal-wishes" class="birthday-wishes" style="display: none;">
+    <img src="assets/congratulations-7600_256.gif" class="congrats-gif" alt="Chúc mừng" />
+    <p id="wishMessage"></p>
+  </div>
+
+  <!-- Canvas hiệu ứng pháo hoa -->
+  <canvas id="fireworksCanvas"></canvas>
+
+  <!-- JavaScript -->
+  <script src="HB.js"></script>
+  <script>
+    // Phát nhạc khi vào trang
+    window.onload = () => {
+      const music = document.getElementById("music");
+      music.play().catch(() => {
+        console.log("Trình duyệt đã chặn tự động phát nhạc.");
+      });
+    };
+
+    // Gắn sự kiện click vào nút submit
+    document.getElementById("submitBtn").addEventListener("click", () => {
+      const music = document.getElementById("music");
+      const hbMusic = document.getElementById("hbMusic");
+
+      // Dừng nhạc cũ
+      music.pause();
+      music.currentTime = 0;
+
+      // Phát nhạc mới
+      hbMusic.play().catch(() => {
+        console.log("Không thể phát HB.mp3 do trình duyệt chặn.");
+      });
+
+      // Gọi hàm xử lý trong HB.js nếu có
+      if (typeof submitBirthdayInfo === "function") {
+        submitBirthdayInfo(); // Đảm bảo hàm này có trong HB.js
+      } else {
+        console.warn("Hàm submitBirthdayInfo chưa được định nghĩa trong HB.js.");
+      }
+    });
+  </script>
+</body>
+
+</html>
